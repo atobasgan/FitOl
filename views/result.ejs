@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>FitOl - VKİ Sonuçları</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <div class="card shadow p-4">
+      <h2 class="text-center mb-3">Merhaba, <%= name %>!</h2>
+      <p><strong>Yaş:</strong> <%= age %></p>
+      <p><strong>Cinsiyet:</strong> <%= gender === 'male' ? 'Erkek' : 'Kadın' %></p>
+      <p><strong>VKİ Değeriniz:</strong> <%= bmiValue %></p>
+      <p><strong>Kategori:</strong> <%= bmiCategory %></p>
+      <p><strong>Açıklama:</strong> <%= bmiDescription %></p>
+      <hr>
+
+      <% if (!selectedOption) { %>
+        <h4>Ne tür bir plan istiyorsunuz?</h4>
+        <form action="/select-option" method="POST">
+          <input type="hidden" name="bmiId" value="<%= bmiId %>">
+          <div class="d-grid gap-2">
+            <button name="selectedOption" value="diet" class="btn btn-outline-primary">🥗 Sadece Diyet Planı</button>
+            <button name="selectedOption" value="exercise" class="btn btn-outline-secondary">🏋️‍♂️ Sadece Egzersiz Planı</button>
+            <button name="selectedOption" value="both" class="btn btn-outline-success">💪 Her İkisi</button>
+          </div>
+        </form>
+      <% } else if ((selectedOption === 'exercise' || selectedOption === 'both') && !exercisePlan) { %>
+        <h4>Egzersiz türünü seçin:</h4>
+        <form action="/submit-exercise-type" method="POST">
+          <input type="hidden" name="bmiId" value="<%= bmiId %>">
+          <div class="d-grid gap-2">
+            <button name="exerciseType" value="home" class="btn btn-outline-info">🏠 Evde Egzersiz</button>
+            <button name="exerciseType" value="gym" class="btn btn-outline-dark">🏋️ Spor Salonu</button>
+          </div>
+        </form>
+      <% } else { %>
+
+        <% if (selectedOption === 'exercise' || selectedOption === 'both') { %>
+          <h4>Egzersiz Planı</h4>
+          <p><%- exercisePlan %></p>
+        <% } %>
+
+        <% if (selectedOption === 'diet' || selectedOption === 'both') { %>
+          <% if (!selectedDiet) { %>
+            <h4>3 Farklı Diyet Planı</h4>
+            <p>Lütfen bir diyet planı seçin:</p>
+            <form action="/select-diet" method="POST">
+              <input type="hidden" name="bmiId" value="<%= bmiId %>">
+              <button name="selectedDiet" value="1" class="btn btn-outline-primary my-1 w-100">1️⃣ Tavuklu Diyeti Seç</button>
+              <button name="selectedDiet" value="2" class="btn btn-outline-secondary my-1 w-100">2️⃣ Kırmızı Etli Diyeti Seç</button>
+              <button name="selectedDiet" value="3" class="btn btn-outline-success my-1 w-100">3️⃣ Vegan Diyeti Seç</button>
+            </form>
+          <% } else { %>
+            <h4>Seçtiğiniz Diyet Planı</h4>
+            <p><%- selectedDietPlan %></p>
+          <% } %>
+        <% } %>
+
+      <% } %>
+
+      <div class="d-grid gap-2 mt-4">
+        <a href="/calculate" class="btn btn-primary">Yeni Hesaplama Yap</a>
+        <a href="/dashboard" class="btn btn-secondary">Kayıtlarımı Görüntüle</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
