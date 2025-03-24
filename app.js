@@ -1,12 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const path = require('path');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const User = require('./models/User');
+const path = require('path');
 
-const app = express();
+const app = express(); // Önce app tanımlanmalı
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+// diğer kodlar...
 
 // MongoDB bağlantısı
 mongoose.connect('mongodb://localhost:27017/bmiApp', {
@@ -222,12 +226,15 @@ function getDietPlans(bmiValue) {
   }
 
 // Ana Sayfa (Sadece giriş yapmış kullanıcılar erişebilir)
+// Ana sayfa: Eğer kullanıcı giriş yapmamışsa splash ekranını göster, aksi halde dashboard'a yönlendir.
 app.get('/', (req, res) => {
-  if (!req.session.user) {
-    return res.redirect('/login');
-  }
-  res.render('index', { user: req.session.user });
-});
+    if (!req.session.user) {
+      res.render('splash');
+    } else {
+      res.redirect('/dashboard');
+    }
+  });
+  
 
 // Plan tercihi ekranı
 app.post('/choose-plan', async (req, res) => {
@@ -552,9 +559,10 @@ app.get('/logout', (req, res) => {
 });
 
 // Sunucuyu başlat
-const PORT = process.env.PORT || 8004;
-app.listen(PORT, () => {
-  console.log(`Sunucu http://localhost:${PORT} adresinde çalışıyor`);
+const port = process.env.PORT || 10000;
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 
