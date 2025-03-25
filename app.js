@@ -534,22 +534,30 @@ app.get('/login', (req, res) => {
 
 // Giriş işlemi
 app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    return res.send('Kullanıcı bulunamadı.');
-  }
-
-  const passwordMatch = await bcrypt.compare(password, user.password);
-
-  if (!passwordMatch) {
-    return res.send('Hatalı şifre!');
-  }
-
-  req.session.user = user;
-  res.redirect('/dashboard');
-});
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+  
+    if (!user) {
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 1 saniye bekle
+      return res.render('login', {
+        errorMessage: '❌ Kullanıcı bulunamadı.'
+      });
+    }
+  
+    const passwordMatch = await bcrypt.compare(password, user.password);
+  
+    if (!passwordMatch) {
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 1 saniye bekle
+      return res.render('login', {
+        errorMessage: '❌ Hatalı şifre girdiniz.'
+      });
+    }
+  
+    req.session.user = user;
+    res.redirect('/dashboard');
+  });
+  
+  
 
 
 // Çıkış işlemi

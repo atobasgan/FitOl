@@ -19,5 +19,8 @@
     "mongoose": "^8.12.2",
     "puppeteer": "^24.4.0"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "selenium-webdriver": "^4.30.0"
+  }
 }
