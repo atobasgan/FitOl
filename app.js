@@ -50,12 +50,57 @@ app.use(session({
   saveUninitialized: true,
 }));
 
+const exerciseLinks = {
+    'Şınav': 'https://www.youtube.com/shorts/Q4pepteWmck',
+    'Squat': 'https://www.youtube.com/shorts/Q4pepteWmck',
+    'Plank': 'https://www.youtube.com/shorts/v3V6iyQfKzY',
+    'Sandalye Dips': 'https://www.youtube.com/shorts/jlVIALohg2I',
+    'Glute Bridge': 'https://www.youtube.com/shorts/2-47T-U82KU',
+    'Bench Press': 'https://www.youtube.com/shorts/_FkbD0FhgVE',
+    'Leg Press': 'https://www.youtube.com/shorts/EotSw18oR9w',
+    'Lat Pulldown': 'https://www.youtube.com/shorts/bNmvKpJSWKM',
+    'Dumbbell Shoulder Press': 'https://www.youtube.com/shorts/k6tzKisR3NY',
+    'Cable Triceps Pushdown': 'https://www.youtube.com/shorts/u36jNfqh8_U',
+    'Pull-up': 'https://www.youtube.com/shorts/6YGGFTKlDDw',
+    'Seated Row': 'https://www.youtube.com/shorts/LyZH4UGdDTc',
+    'Mountain Climber': 'https://www.youtube.com/shorts/dqjZ6BGhY9s',
+    'Treadmill': 'https://www.youtube.com/shorts/N8AAJjzmKZ4',
+    'Kettlebell Swing': 'https://www.youtube.com/shorts/n1df4ASFeZU',
+    'Deadlift': 'https://www.youtube.com/shorts/QjoWGxlS0Xw',
+    'High Knees': 'https://www.youtube.com/shorts/0X0Q8wKLEfo',
+    'Burpee': 'https://www.youtube.com/shorts/gYiE_2BtSTg',
+    'Jumping Jack': 'https://www.youtube.com/shorts/yg3KQQn3QWg',
+    'Push-up': 'https://www.youtube.com/shorts/RmRvMq2TcVg',
+    'Split Squat': 'https://www.youtube.com/shorts/uODWo4YqbT8',
+    'Superman': 'https://www.youtube.com/shorts/ZH0FS5Gp_eg',
+    'Leg Curl': 'https://www.youtube.com/shorts/ANKSmhT0dTk',
+    'Incline Bench Press': 'https://www.youtube.com/shorts/98HWfiRonkE',
+    'Chest Press': 'https://www.youtube.com/shorts/2awX3rTGa1k',
+    'Yerinde Yürüyüş': 'https://www.youtube.com/shorts/wIOTUxWGuT0',
+    'Duvar Squat': 'https://www.youtube.com/shorts/hWfmD_HbLms',
+    'Sandalye Otur-Kalk': 'https://www.youtube.com/watch?v=DW8w11mNsGY',
+    'Kol Rotasyonu': 'https://www.youtube.com/shorts/rrh_bGbVbpY',
+    'Nefes Egzersizi': 'https://www.youtube.com/shorts/UdytBAiJVmI',
+    'Eliptik Bisiklet': 'https://www.youtube.com/shorts/iLqyAueSC4Q',
+    'Leg Extension (Hafif)': 'https://www.youtube.com/shorts/XQeytI_bCsk',
+    'Cable Row': 'https://www.youtube.com/shorts/qD1WZ5pSuvk',
+    'Shoulder Press (Makine)': 'https://www.youtube.com/shorts/7tgx6QHB0-A',
+    'Treadmill Yürüyüş': 'https://www.youtube.com/shorts/tBZVYkK8SDw'
+  };
+  
+  
 function getExercisePlan(bmiValue, type) {
     if (!type) return null;
   
     function formatPlan(title, steps) {
-      return `<b>${title}</b><br>` + steps.map(step => `🕒 ${step}`).join('<br>');
-    }
+        return `<b>${title}</b><br>` + steps.map(step => {
+          const hareketAdı = step.replace(/^[0-9xsndk\s]+/, '').trim();
+          const link = exerciseLinks[hareketAdı];
+          return link
+            ? `🕒 <a href="${link}" target="_blank">${step}</a>`
+            : `🕒 ${step}`;
+        }).join('<br>');
+      }
   
     if (bmiValue < 18.5) {
       return type === 'home' ? formatPlan('🏠 Evde Egzersiz (Zayıf Birey)', [
@@ -80,7 +125,7 @@ function getExercisePlan(bmiValue, type) {
         '3x15 Superman'
       ]) : formatPlan('🏋️‍♂️ Spor Salonu Egzersizi (Normal Birey)', [
         '4x8 Deadlift',
-        '3x10 Pull-up / Lat Pulldown',
+        '3x10 Pull-up',
         '3x10 Incline Bench Press',
         '3x12 Leg Curl',
         '3x1dk Plank'
