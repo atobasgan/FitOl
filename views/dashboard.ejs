@@ -28,14 +28,19 @@
               <h5><strong>Tarih:</strong> <%= new Date(record.date).toLocaleString('tr-TR') %></h5>
               <p><strong>VKİ:</strong> <%= record.bmiValue.toFixed(2) %> (<%= record.bmiCategory %>)</p>
               <p><strong>Açıklama:</strong> <%= record.bmiDescription %></p>
+
               <% if (record.exercisePlan) { %>
                 <p><strong>Egzersiz Planı:</strong><br><%- record.exercisePlan %></p>
               <% } %>
-              <% if (record.selectedDiet) { %>
-                <p><strong>Seçtiğiniz Diyet Planı:</strong><br><%- record.dietPlan %></p>
-              <% } else if (record.dietPlan) { %>
-                <p><strong>Diyet Planı:</strong><br><%- record.dietPlan %></p>
+
+              <% if (record.selectedOption === 'diet' || record.selectedOption === 'both') { %>
+                <% if (record.selectedDiet && record.dietPlan) { %>
+                  <p><strong>Seçtiğiniz Diyet Planı:</strong><br><%- record.dietPlan %></p>
+                <% } else if (record.dietPlan) { %>
+                  <p><strong>Diyet Planı:</strong><br><%- record.dietPlan %></p>
+                <% } %>
               <% } %>
+
             </div>
           </div>
         <% }); %>
