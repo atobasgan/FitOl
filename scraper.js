@@ -1,7 +1,7 @@
 // scraper.js
 const mongoose = require("mongoose");
 
-// MongoDB bağlantısı (sen kendi bağlantı URI'ını buraya yazabilirsin)
+
 mongoose.connect("mongodb://127.0.0.1:27017/bmiDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
